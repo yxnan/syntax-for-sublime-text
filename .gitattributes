@@ -1,1 +1,7 @@
-*.sublime-syntax linguist-language=yaml
+*.sublime-syntax  text diff=yaml
+*.YAML-tmLanguage text diff=yaml
+
+*.sublime-build   text diff=json
+
+*.tmLanguage      text diff=xml
+*.tmPreferences    text diff=xml
