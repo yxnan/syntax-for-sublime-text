@@ -1,0 +1,91 @@
+%YAML 1.2
+---
+#############################################################################
+# newLISP syntax for sublime text
+#
+# Support basic syntax, built-in functions and macros.
+# By sakamitz@ZJU, Friday, October 05 2018, 14:42
+#############################################################################
+name: newLISP
+file_extensions:
+  - lsp
+scope: source.newlisp
+contexts:
+  main:
+    - include: comments
+    - include: parens
+
+  expressions:
+    - include: comments
+    - include: numbers
+    - include: strings
+    - include: control
+    - include: operators
+    - include: functions
+
+  control:
+    - match: (\b(?i:begin|bind|case|catch|cond|do\-until|do\-while|doargs|dolist|dostring|dotimes|dotree|for|for\-all|if|let|unless|until|when|while)\b)
+      scope: keyword.control.newlisp
+
+  functions:
+    # - match: (\b(?i:(define|define\-macro|fn|lambda|lambda\-macro))\b)(\s+)\(((\w|\-|\!|\?)*)\)
+    ### above is to match a clisp-style func.
+    - match: (\b(?i:(define|define\-macro|fn|lambda|lambda\-macro))\b)(\s+)\(([^(\s|\(|\))]+)(\s+([^(\s|\(|\))]+))*\s*\)
+    ### multi-line parameter-definition is unsolved
+      scope: meta.function.newlisp
+      captures:
+        2: storage.type.function-type.newlisp
+        4: entity.name.function.newlisp
+    - match: '\b(\!|\$|array\?|atom\?|bigint\?|context\?|directory\?|empty\?|even\?|file\?|float\?|global\?|inf\?|integer\?|lambda\?|legal\?|list\?|macro\?|NaN\?|nil\?|null\?|odd\?|number\?|primitive\?|protected\?|quote\?|string\?|symbol\?|true\?|zero\?|def\-new|ends\-with|find\-all|pop\-assoc|ref\-all|set\-ref\-all|set\-ref|starts\-with|eval\-string\-js|eval\-string|get\-char|get\-float|get\-int|get\-long|get\-string|lower\-case|regex\-comp|title\-case|upper\-case|array\-list|date\-list|date\-parse|date\-value|time\-of\-day|bayes\-query|bayes\-train|crit\-chi2|crit\-f|crit\-t|crit\-z|kmeans\-query|kmeans\-train|prob\-chi2|prob\-f|prob\-t|prob\-z|t\-test|append\-file|current\-line|read\-char|read\-file|read\-key|read\-line|read\-utf8|write\-char|write\-file|write\-line|change\-dir|copy\-file|delete\-file|file\-info|make\-dir|real\-path|remove\-dir|rename\-file|wait\-pid|base64\-enc|base64\-dec|delete\-url|get\-url|json\-error|json\-parse|put\-url|post\-url|xfer\-event|xml\-error|xml\-parse|xml\-type\-tags|net\-accept|net\-close|net\-connect|net\-error|net\-eval|net\-interface|net\-ipv|net\-listen|net\-local|net\-lookup|net\-packet|net\-peek|net\-ping|net\-receive\-from|net\-receive\-udp|net\-receive|net\-select|net\-send\-to|net\-send\-udp|net\-send|net\-service|net\-sessions|display\-html|command\-event|error\-event|last\-error|prompt\-event|read\-expr|reader\-event|set\-locale|sys\-error|sys\-info|throw\-error|trace\-highlight|main\-args|pretty\-print|append|apply|args|assoc|bigint|chop|clean|collect|cons|constant|count|curry|define|difference|exists|eval|expand|extend|filter|find|flat|index|intersect|last|length|letex|letn|list|local|lookup|map|match|member|nth|pop|push|quote|ref|rest|replace|reverse|rotate|select|self|setf|setq|set|silent|slice|sort|swap|unify|unique|union|address|bits|char|dup|encrypt|explode|float|format|int|join|name|pack|parse|regex|source|string|sym|trim|unicode|unpack|utf8|utf8len|abs|acos|acosh|add|array|asin|asinh|atan|atanh|atan2|beta|betai|binomial|ceil|cos|cosh|crc32|dec|div|erf|exp|factor|fft|floor|flt|gammai|gammaln|gcd|ifft|inc|log|min|max|mod|mul|pow|round|sequence|series|sgn|sin|sinh|sqrt|sub|tan|tanh|det|invert|mat|multiply|transpose|first|date|now|time|amb|corr|normal|rand|random|randomize|seed|stats|search|fv|irr|nper|npv|pv|pmt|close|device|exec|load|open|peek|println|print|read|save|seek|write|directory|abort|destroy|fork|pipe|process|receive|semaphore|send|share|spawn|sync|term|callback|context|copy|debug|default|delete|env|exit|global|import|new|reset|signal|sleep|struct|symbols|timer|throw|trace|macro|ostype|prefix|cpymem|dump)[^(\s|\(|\))]*'
+      scope: support.function.newlisp
+
+  operators:
+    - match: '\!\=|\>\=|\<\=|\=|\>|\<'
+      scope: keyword.operator.comparison.newlisp
+    - match: '\+|\-|\*|\/|\%|\+\+|\-\-'
+      scope: keyword.operator.arithmetic.newlisp
+    - match: '\b(?i:and|or|not)\b'
+      scope: keyword.operator.logical.newlisp
+    - match: '\<\<|\>\>|\&|\||\^|\~'
+      scope: keyword.operator.bitwise.newlisp
+
+  parens:
+    - match: '\('
+      scope: punctuation.definition.group.begin.newlisp
+      push:
+        - meta_scope: meta.group.newlisp
+        - match: '\)'
+          scope: punctuation.definition.group.end.newlisp
+          pop: true
+        - include: expressions
+        - include: parens
+    - match: '\)'
+      scope: invalid.illegal.stray-bracket-end.newlisp
+
+  numbers:
+    - match: '\b((0(x|X)|0b\h*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(l|L*)?\b'
+      scope: constant.numeric.newlisp
+
+  strings:
+    - match: '"|\[text\]'
+      scope: punctuation.definition.string.begin.newlisp
+      push:
+        - meta_scope: string.quoted.double.newlisp
+        - match: '(")|(\[\/text\])'
+          captures:
+            1: punctuation.definition.string.end.newlisp
+          pop: true
+        # - match: '\n[^\[]'
+        #     1: punctuation.definition.string.end.newlisp
+        #     2: invalid.illegal.newline.newlisp
+        #   pop: true
+
+        ### maybe no need:
+        # - match: \\.
+        #   scope: constant.character.escape.newlisp
+
+  comments:
+    - match: (;|#).*$\n?
+      scope: comment.line.comment.newlisp
+      captures:
+        1: punctuation.definition.comment.newlisp

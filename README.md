@@ -9,6 +9,8 @@ Include: **newLISP, Prolog, Arduino**
 # Usage
 Put the ```*.sublime-syntax``` file to ```~/.config/sublime-text-3/Packages/User/```
 
+Or simply do with the whole directory.
+
 Enjoy it!
 
 # Feature
