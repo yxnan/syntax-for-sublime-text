@@ -1,7 +1,6 @@
-*.sublime-syntax  linguist-language=yaml
+*.sublime-syntax linguist-language=yaml
 *.YAML-tmLanguage linguist-language=yaml
+*.sublime-build linguist-language=json
 
-*.sublime-build   linguist-language=json
-
-*.tmLanguage      linguist-language=xml
-*.tmPreferences   linguist-language=xml
+*.tmLanguage linguist-language=xml
+*.tmPreferences linguist-language=xml
