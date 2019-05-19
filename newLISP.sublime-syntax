@@ -1,11 +1,17 @@
 %YAML 1.2
 ---
-#############################################################################
+#---------------------------------------
 # newLISP syntax for sublime text
 #
-# Support basic syntax, built-in functions and macros.
+# Support features:
+#
+#   1. Basic syntax
+#   2. Built-in functions and macros
+#   3. Lexical constants
+#   4. Multi-line string
+#
 # By sakamitz@ZJU, Friday, October 05 2018, 14:42
-#############################################################################
+#---------------------------------------
 name: newLISP
 file_extensions:
   - lsp
@@ -28,10 +34,7 @@ contexts:
       scope: keyword.control.newlisp
 
   functions:
-    # - match: (\b(?i:(define|define\-macro|fn|lambda|lambda\-macro))\b)(\s+)\(((\w|\-|\!|\?)*)\)
-    ### above is to match a clisp-style func.
     - match: (\b(?i:(define|define\-macro|fn|lambda|lambda\-macro))\b)(\s+)\(([^(\s|\(|\))]+)(\s+([^(\s|\(|\))]+))*\s*\)
-    ### multi-line parameter-definition is unsolved
       scope: meta.function.newlisp
       captures:
         2: storage.type.function-type.newlisp
@@ -75,14 +78,6 @@ contexts:
           captures:
             1: punctuation.definition.string.end.newlisp
           pop: true
-        # - match: '\n[^\[]'
-        #     1: punctuation.definition.string.end.newlisp
-        #     2: invalid.illegal.newline.newlisp
-        #   pop: true
-
-        ### maybe no need:
-        # - match: \\.
-        #   scope: constant.character.escape.newlisp
 
   comments:
     - match: (;|#).*$\n?
